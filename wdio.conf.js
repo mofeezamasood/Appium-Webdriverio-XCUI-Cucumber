@@ -52,10 +52,11 @@ exports.config = {
     {
       // capabilities for local Appium web tests on iOS
       platformName: "iOS",
-      browserName: "Safari",
-      "appium:deviceName": "iPhone Simulator",
-      "appium:platformVersion": "16.4",
       "appium:automationName": "XCUITest",
+      "appium:deviceName": "iPhone 16e",
+      "appium:platformVersion": "26.2",
+      "appium:app": "com.pavlenko.Habo.mofi",
+      "appium:noReset": "true",
     },
   ],
 
@@ -107,7 +108,8 @@ exports.config = {
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
   services: ["appium"],
-
+  appium: { command: "appium" },
+  sync: false,
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
   // see also: https://webdriver.io/docs/frameworks

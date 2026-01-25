@@ -1,6 +1,5 @@
-const { Given, When, Then } = require("@wdio/cucumber-framework");
+const { Given } = require("@wdio/cucumber-framework");
 const { expect, $ } = require("@wdio/globals");
-
 const LoginPage = require("../pageobjects/login.page");
 
 const pages = {
@@ -8,23 +7,6 @@ const pages = {
 };
 
 // Given(/^I am on the (\w+) page$/, async (page) => {
-
-Given("the Habo app is installed", () => {
-  // Write code here that turns the phrase above into concrete actions
-});
-
-Given("the Habo app is launched", () => {
-  // Write code here that turns the phrase above into concrete actions
-});
-
-Given("a habit named {string} exists", (s) => {
-  // Write code here that turns the phrase above into concrete actions
-});
-
-Given("multiple habits exist", () => {
-  // Write code here that turns the phrase above into concrete actions
-});
-
 //   await pages[page].open();
 // });
 
@@ -38,3 +20,22 @@ Given("multiple habits exist", () => {
 //     expect.stringContaining(message),
 //   );
 // });
+
+Given("the Habo app is installed", async () => {
+  console.log("Checking to see if the app is installed");
+  const bundleid = "com.pavlenko.Habo.mofi";
+  await expect(driver.isAppInstalled(bundleid));
+  console.log("App is installed");
+});
+
+Given("the Habo app is launched", () => {
+  // Write code here that turns the phrase above into concrete actions
+});
+
+Given("a habit named {string} exists", (s) => {
+  // Write code here that turns the phrase above into concrete actions
+});
+
+Given("multiple habits exist", () => {
+  // Write code here that turns the phrase above into concrete actions
+});

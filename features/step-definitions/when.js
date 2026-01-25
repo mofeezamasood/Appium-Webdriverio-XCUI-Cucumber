@@ -1,10 +1,17 @@
-const { Given, When, Then } = require("@wdio/cucumber-framework");
+const { When } = require("@wdio/cucumber-framework");
 const { expect, $ } = require("@wdio/globals");
+const HomePage = require("../pageobjects/home.page");
 
-const LoginPage = require("../pageobjects/login.page");
+const pages = {
+  home: HomePage,
+};
 
-When("I launch the Habo app", () => {
-  // Write code here that turns the phrase above into concrete actions
+When("I launch the Habo app", async () => {
+  console.log("Checking to see if the app is launched");
+  const myPage = pages["home"];
+  const myelemt = await myPage.isOnHomePage();
+  await expect(myelemt).toExist();
+  console.log("App is launched");
 });
 
 When("I tap on the Save Habit button", () => {
