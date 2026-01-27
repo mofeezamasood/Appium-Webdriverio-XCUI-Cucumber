@@ -7,6 +7,13 @@ Feature: Add Habit
   Scenario: Add a new habit successfully
     Given the Habo app is launched
     When I tap on the Add Habit button
-    And I enter "Drink Water" as the habit name
+    And I enter "<Habit>" as the habit name
     And I tap on the Save Habit button
-    Then the habit "Drink Water" should appear in the habit list
+    Then the habit "<Habit>" should appear in the habit list
+
+  Examples:
+    |      Habit      |
+    |   Drink Water   | 
+    # |   Drink Water   | 
+    # |  Do Excercise   | 
+    # |  Go on a Walk  | 

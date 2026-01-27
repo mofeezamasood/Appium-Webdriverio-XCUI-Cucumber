@@ -9,25 +9,29 @@ const pages = {
 Then("an empty habit list should be visible on first launch", async () => {
   console.log("Checking to see if the habit list is visible");
 
-  const myPage = pages["home"];
-  const myelemt = await myPage.habitListIsVisible();
-
+  const myelemt = await pages["home"].habitListIsVisible();
   await expect(myelemt).toBe(false);
+
   console.log("List is not visible (Empty)");
 });
 
 Then("the home screen should be displayed", async () => {
   console.log("Checking to see if the home page is displayed");
 
-  const myPage = pages["home"];
-  const myelemt = await myPage.isOnHomePage();
-
+  const myelemt = await pages["home"].isOnHomePage();
   await expect(myelemt).toBe(true);
+
   console.log("App is launched");
 });
 
-Then("the habit {string} should appear in the habit list", (s) => {
-  // Write code here that turns the phrase above into concrete actions
+Then("the habit {string} should appear in the habit list", async (s) => {
+  console.log(`Checking if entered habit ${s} appeared on the habit list`);
+
+  const myelemt = await pages["home"].isNewHabitDisplaying(s);
+
+  await expect(myelemt).toBe(true);
+
+  console.log(`Entered habit ${s} appeared on the habit list`);
 });
 
 Then("the habit {string} should be marked as completed", (s) => {

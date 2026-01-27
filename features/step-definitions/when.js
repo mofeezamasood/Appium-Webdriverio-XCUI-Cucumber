@@ -1,16 +1,17 @@
 const { When } = require("@wdio/cucumber-framework");
 const { expect, $ } = require("@wdio/globals");
 const HomePage = require("../pageobjects/home.page");
+const CreatePage = require("../pageobjects/create.habit.page");
 
 const pages = {
   home: HomePage,
+  habit: CreatePage,
 };
 
 When("I launch the Habo app", async () => {
   console.log("Checking to see if the app is launched");
 
-  const myPage = pages["home"];
-  const myelemt = await myPage.isOnHomePage();
+  const myelemt = await pages["home"].isOnHomePage();
 
   // await expect(await pages["home"].isOnHomePage());
 
@@ -18,21 +19,32 @@ When("I launch the Habo app", async () => {
   console.log("App is launched");
 });
 
-When("I tap on the Save Habit button", () => {
-  // Write code here that turns the phrase above into concrete actions
+When("I tap on the Save Habit button", async () => {
+  console.log("Pressing save habit button");
+  await expect(await pages["habit"].clickSaveHabitButton());
+  console.log(`Clicked save habit button`);
 });
 
-When("I enter {string} as the habit name", (s) => {
-  // Write code here that turns the phrase above into concrete actions
+When("I enter {string} as the habit name", async (s) => {
+  console.log(`Entering ${s} as habit`);
+  await expect(await pages["habit"].enterHabitText(s));
+  console.log(`Entered ${s} as habit`);
 });
 
-When("I tap on the Add Habit button", () => {
-  // Write code here that turns the phrase above into concrete actions
+When("I tap on the Add Habit button", async () => {
+  console.log("Tapping on the Add Habit Button");
+  await expect(await pages["home"].clickAddHabit());
+  console.log("Add Habit Button Tapped");
 });
 
-When("I mark the habit {string} as completed", (s) => {
-  // Write code here that turns the phrase above into concrete actions
-});
+When(
+  "I mark the habit {string} as completed for date {string}",
+  async (s, s2) => {
+    console.log(`Marking habit ${s} as completed for date ${s2}`);
+    await expect(await pages["home"].completeHabitForGivenDate(s, s2));
+    console.log(`Marked habit ${s} as completed for date ${s2}`);
+  },
+);
 
 When("I save the habit changes", () => {
   // Write code here that turns the phrase above into concrete actions

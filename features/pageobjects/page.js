@@ -10,9 +10,8 @@ module.exports = class Page {
     return await driver.$(element);
   }
 
-  isClickable() {}
-
-  open(path) {
-    return browser.url(`https://the-internet.herokuapp.com/${path}`);
+  async click(element) {
+    const el = await this.getElement(element);
+    return await el.click();
   }
 };

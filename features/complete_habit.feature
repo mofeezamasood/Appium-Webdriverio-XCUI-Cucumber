@@ -6,6 +6,13 @@ Feature: Complete Habit
 
   Scenario: Mark habit as completed
     Given the Habo app is launched
-    And a habit named "Read" exists
-    When I mark the habit "Read" as completed
-    Then the habit "Read" should be marked as completed
+    And a habit named "<Habit>" exists
+    When I mark the habit "<Habit>" as completed for date "<Date>"
+    # Then the habit "<Habit>" should be marked as completed
+
+  Examples:
+    |      Habit      | Date|
+    |   Do Excercise    | Monday, January 26, 2026|
+    # |   Drink Water   | 
+    # |  Do Excercise   | 
+    # |  Go on a Walk  | 

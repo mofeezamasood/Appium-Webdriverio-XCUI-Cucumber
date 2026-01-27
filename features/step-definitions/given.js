@@ -1,9 +1,9 @@
 const { Given } = require("@wdio/cucumber-framework");
 const { expect, $ } = require("@wdio/globals");
-const LoginPage = require("../pageobjects/login.page");
+const HomePage = require("../pageobjects/home.page");
 
 const pages = {
-  login: LoginPage,
+  home: HomePage,
 };
 
 // Given(/^I am on the (\w+) page$/, async (page) => {
@@ -28,12 +28,22 @@ Given("the Habo app is installed", async () => {
   console.log("App is installed");
 });
 
-Given("the Habo app is launched", () => {
-  // Write code here that turns the phrase above into concrete actions
+Given("the Habo app is launched", async () => {
+  console.log("Checking to see if the app is launched");
+
+  const myelemt = await pages["home"].isOnHomePage();
+
+  await expect(myelemt).toBe(true);
+  console.log("App is launched");
 });
 
-Given("a habit named {string} exists", (s) => {
-  // Write code here that turns the phrase above into concrete actions
+Given("a habit named {string} exists", async (s) => {
+  console.log(`Checking to see if habit ${s} exists`);
+
+  const myelemt = await pages["home"].isNewHabitDisplaying(s);
+  await expect(myelemt).toBe(true);
+
+  console.log(`Habit ${s} exists`);
 });
 
 Given("multiple habits exist", () => {

@@ -58,7 +58,6 @@ exports.config = {
       "appium:app": "com.pavlenko.Habo.mofi",
       "appium:noReset": "true",
       "appium:fullReset": "false",
-      // "appium:wdaLaunchTimeout": "3000",
     },
   ],
 
@@ -102,8 +101,8 @@ exports.config = {
   // if browser driver or grid doesn't send response
   connectionRetryTimeout: 120000,
   //
-  // Default request retries count
-  connectionRetryCount: 3,
+  // Default request retries count 3
+  connectionRetryCount: 1,
   //
   // Test runner services
   // Services take over a specific job you don't want to take care of. They enhance
@@ -111,7 +110,7 @@ exports.config = {
   // commands. Instead, they hook themselves up into the test process.
   services: ["appium"],
   appium: { command: "appium" },
-  sync: false,
+  sync: true,
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
   // see also: https://webdriver.io/docs/frameworks

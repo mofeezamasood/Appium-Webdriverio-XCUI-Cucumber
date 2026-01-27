@@ -19,12 +19,25 @@ class HomePage extends Page {
   }
 
   get habitListEmpty() {
-    return `//XCUIElementTypeApplication[@name="Habo"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[4]/XCUIElementTypeOther[1]`;
+    return "accessibility id:Create your first habit.";
   }
 
   get habitListFilled() {
-    return "//XCUIElementTypeWindow/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[4]/XCUIElementTypeOther[2]/XCUIElementTypeScrollView";
+    return `-ios class chain:**/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[4]/XCUIElementTypeOther[2]/XCUIElementTypeScrollView`;
   }
+
+  get addHabitButton() {
+    return "accessibility id:Add";
+  }
+
+  async newHabitSelector(habit) {
+    console.log("inside newHabitSelector");
+    return await driver.$$(
+      `-ios class chain:**/XCUIElementTypeOther[\`name == "${habit}"\`]`,
+    );
+  }
+
+  /////////////////////////////////////////////////////////////
 
   async isOnHomePage() {
     if (
@@ -50,6 +63,38 @@ class HomePage extends Page {
     } else {
       return false;
     }
+  }
+
+  async lastHabitFound(habit) {
+    const items = await this.newHabitSelector(habit);
+    return await items.at(-1);
+  }
+
+  async firstHabitFound(habit) {
+    console.log("inside firstHabitFound");
+    const items = await this.newHabitSelector(habit);
+    return await items.at(0);
+  }
+
+  async clickAddHabit() {
+    await super.click(this.addHabitButton);
+  }
+
+  async isNewHabitDisplaying(habit) {
+    const lastitem = await this.lastHabitFound(habit);
+    await lastitem.waitForDisplayed({
+      timeout: 5000,
+    });
+    return true;
+  }
+
+  async existingHabitFinder(habit) {
+    const firstitem = await this.firstHabitFound(habit);
+    console.log(`first item ${firstitem}`);
+    await firstitem.waitForDisplayed({
+      timeout: 5000,
+    });
+    return true;
   }
 }
 
