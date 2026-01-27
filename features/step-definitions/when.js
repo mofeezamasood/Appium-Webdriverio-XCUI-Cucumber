@@ -39,10 +39,10 @@ When("I tap on the Add Habit button", async () => {
 
 When(
   "I mark the habit {string} as completed for date {string}",
-  async (s, s2) => {
-    console.log(`Marking habit ${s} as completed for date ${s2}`);
-    await expect(await pages["home"].completeHabitForGivenDate(s, s2));
-    console.log(`Marked habit ${s} as completed for date ${s2}`);
+  async (habitName, dateName) => {
+    console.log(`Marking habit ${habitName} as completed for date ${dateName}`);
+    await pages["home"].completeHabitForGivenDate(habitName, dateName);
+    console.log(`Marked habit ${habitName} as completed for date ${dateName}`);
   },
 );
 
