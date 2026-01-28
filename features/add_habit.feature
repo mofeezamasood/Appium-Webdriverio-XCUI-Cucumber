@@ -14,6 +14,5 @@ Feature: Add Habit
   Examples:
     |      Habit      |
     |   Drink Water   | 
-    # |   Drink Water   | 
-    # |  Do Excercise   | 
-    # |  Go on a Walk  | 
+    |  Do Excercise   | 
+    |  Go on a Walk   |

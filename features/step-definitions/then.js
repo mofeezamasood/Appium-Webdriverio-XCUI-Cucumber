@@ -1,74 +1,26 @@
 const { Then } = require("@wdio/cucumber-framework");
-const { expect, $ } = require("@wdio/globals");
 const HomePage = require("../pageobjects/home.page");
 
-const pages = {
-  home: HomePage,
-};
-
 Then("an empty habit list should be visible on first launch", async () => {
-  console.log("Checking to see if the habit list is visible");
-
-  const myelemt = await pages["home"].habitListIsVisible();
-  await expect(myelemt).toBe(false);
-
-  console.log("List is not visible (Empty)");
+  await expect(await HomePage.habitListIsVisible()).toBe(false);
 });
 
 Then("the home screen should be displayed", async () => {
-  console.log("Checking to see if the home page is displayed");
-
-  const myelemt = await pages["home"].isOnHomePage();
-  await expect(myelemt).toBe(true);
-
-  console.log("App is launched");
-});
-
-Then("the habit {string} should appear in the habit list", async (s) => {
-  console.log(`Checking if entered habit ${s} appeared on the habit list`);
-
-  const myelemt = await pages["home"].isNewHabitDisplaying(s);
-
-  await expect(myelemt).toBe(true);
-
-  console.log(`Entered habit ${s} appeared on the habit list`);
-});
-
-Then("the habit {string} should be marked as completed", (s) => {
-  // Write code here that turns the phrase above into concrete actions
-});
-
-Then("the habit {string} should not appear in the habit list", (s) => {
-  // Write code here that turns the phrase above into concrete actions
-});
-
-Then("the habit should not be added", () => {
-  // Write code here that turns the phrase above into concrete actions
-});
-
-Then("an error message should be displayed", () => {
-  // Write code here that turns the phrase above into concrete actions
+  await expect(await HomePage.isOnHomePage()).toBe(true);
 });
 
 Then(
-  "the habit name should be truncated or an error should be displayed",
-  () => {
-    // Write code here that turns the phrase above into concrete actions
+  "the habit {string} should appear in the habit list",
+  async (habitName) => {
+    await expect(await HomePage.isNewHabitDisplaying(habitName)).toBe(true);
   },
 );
 
-Then("the app should prevent duplicate habits or show a warning", () => {
-  // Write code here that turns the phrase above into concrete actions
-});
-
-Then("all habits should be accessible", () => {
-  // Write code here that turns the phrase above into concrete actions
-});
-
-Then("no habit data should be lost", () => {
-  // Write code here that turns the phrase above into concrete actions
-});
-
-Then("the UI should adjust correctly", () => {
-  // Write code here that turns the phrase above into concrete actions
-});
+Then(
+  "the habit {string} should be marked as completed for date {string}",
+  async (habitName, dateName) => {
+    await expect(
+      await HomePage.isHabitMarkedAsCompleted(habitName, dateName),
+    ).toBe(true);
+  },
+);

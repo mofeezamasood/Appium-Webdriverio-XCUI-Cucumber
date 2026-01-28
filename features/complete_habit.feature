@@ -8,11 +8,10 @@ Feature: Complete Habit
     Given the Habo app is launched
     And a habit named "<Habit>" exists
     When I mark the habit "<Habit>" as completed for date "<Date>"
-    # Then the habit "<Habit>" should be marked as completed
+    Then the habit "<Habit>" should be marked as completed for date "<Date>"
 
   Examples:
     |      Habit      | Date|
-    |   Do Excercise    | Monday, January 26, 2026|
-    # |   Drink Water   | 
-    # |  Do Excercise   | 
-    # |  Go on a Walk  | 
+    |   Drink Water   | Monday, January 26, 2026 |
+    |  Do Excercise   | Monday, January 26, 2026 |
+    |  Go on a Walk   | Tuesday, January 27, 2026 |

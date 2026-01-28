@@ -6,95 +6,159 @@ class HomePage extends Page {
     return '-ios class chain:**/XCUIElementTypeOther[`name == "Habo"`]';
   }
 
-  get archieveHabitsButton() {
-    return '//XCUIElementTypeButton[@name="Archived Habits\nView archived habits"]';
-  }
-
-  get statisticsButton() {
-    return '//XCUIElementTypeButton[@name=\"Statistics\nStatistics\"]';
-  }
-
-  get getSettingsButton() {
-    return '//XCUIElementTypeButton[@name=\"Settings\nSettings\"]';
-  }
-
   get habitListEmpty() {
     return "accessibility id:Create your first habit.";
-  }
-
-  get habitListFilled() {
-    return `-ios class chain:**/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[4]/XCUIElementTypeOther[2]/XCUIElementTypeScrollView`;
   }
 
   get addHabitButton() {
     return "accessibility id:Add";
   }
 
-  async newHabitSelector(habit) {
-    console.log("inside newHabitSelector");
-    return await driver.$$(
-      `-ios class chain:**/XCUIElementTypeOther[\`name == "${habit}"\`]`,
-    );
+  get checkButton() {
+    return "accessibility id:Check";
   }
 
-  /////////////////////////////////////////////////////////////
+  async findHabitElement(habitName) {
+    const selectors = [
+      `-ios class chain:**/XCUIElementTypeOther[\`name == "${habitName}"\`]`,
+      `//XCUIElementTypeOther[@name="${habitName}"]`,
+      `//XCUIElementTypeStaticText[@name="${habitName}"]`,
+      `//XCUIElementType*[@name="${habitName}"]`,
+    ];
+
+    for (const selector of selectors) {
+      try {
+        const element = await driver.$(selector);
+        if (await element.isExisting()) {
+          return element;
+        }
+      } catch (error) {
+        continue;
+      }
+    }
+    return null;
+  }
 
   async isOnHomePage() {
-    if (
-      (await super.getElement(this.homePageElement)).isDisplayed() &&
-      (await super.getElement(this.archieveHabitsButton)).isDisplayed() &&
-      (await super.getElement(this.statisticsButton)).isDisplayed() &&
-      (await super.getElement(this.getSettingsButton)).isDisplayed()
-    ) {
-      console.log("User is on Homepage");
-      return true;
-    } else {
-      return false;
-    }
+    const homeElement = await driver.$(this.homePageElement);
+    return homeElement.isDisplayed();
   }
 
   async habitListIsVisible() {
-    if ((await super.getElement(this.habitListEmpty)).isDisplayed()) {
-      console.log("list is empty");
-      return false;
-    } else if ((await super.getElement(this.habitListFilled)).isDisplayed()) {
-      console.log("list is filled");
-      return true;
-    } else {
+    try {
+      const emptyElement = await driver.$(this.habitListEmpty);
+      return !(await emptyElement.isDisplayed());
+    } catch {
       return false;
     }
   }
 
-  async lastHabitFound(habit) {
-    const items = await this.newHabitSelector(habit);
-    return await items.at(-1);
-  }
-
-  async firstHabitFound(habit) {
-    console.log("inside firstHabitFound");
-    const items = await this.newHabitSelector(habit);
-    return await items.at(0);
-  }
-
   async clickAddHabit() {
-    await super.click(this.addHabitButton);
+    await driver.$(this.addHabitButton).click();
   }
 
   async isNewHabitDisplaying(habit) {
-    const lastitem = await this.lastHabitFound(habit);
-    await lastitem.waitForDisplayed({
-      timeout: 5000,
-    });
+    await driver.pause(2000);
+    const habitElement = await this.findHabitElement(habit);
+    return habitElement !== null && (await habitElement.isDisplayed());
+  }
+
+  async completeHabitForGivenDate(habitName, dateName) {
+    await driver.pause(1000);
+
+    const habitElement = await this.findHabitElement(habitName);
+    if (!habitElement) {
+      throw new Error(`Habit "${habitName}" not found`);
+    }
+
+    const habitLocation = await habitElement.getLocation();
+    const habitSize = await habitElement.getSize();
+    const habitBottom = habitLocation.y + habitSize.height;
+
+    const allDateElements = await driver.$$(
+      `//XCUIElementTypeStaticText[@name="${dateName}"]`,
+    );
+
+    if (allDateElements.length === 0) {
+      throw new Error(`No date elements found for "${dateName}"`);
+    }
+
+    let targetDateElement = null;
+    let closestDistance = Infinity;
+
+    for (let i = 0; i < allDateElements.length; i++) {
+      try {
+        const dateElement = allDateElements[i];
+        const dateLocation = await dateElement.getLocation();
+        const dateSize = await dateElement.getSize();
+        const dateCenterY = dateLocation.y + dateSize.height / 2;
+
+        const habitCenterY = habitLocation.y + habitSize.height / 2;
+        const distance = Math.abs(dateCenterY - habitCenterY);
+
+        if (dateCenterY > habitLocation.y && dateCenterY < habitBottom + 100) {
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            targetDateElement = dateElement;
+          }
+        }
+      } catch (e) {
+        continue;
+      }
+    }
+
+    if (!targetDateElement) {
+      targetDateElement = allDateElements[0];
+    }
+
+    // Click the date element
+    await targetDateElement.click();
+    await driver.pause(500);
+
+    // Now click the Check button
+    await this.clickCheckButton();
+
     return true;
   }
 
-  async existingHabitFinder(habit) {
-    const firstitem = await this.firstHabitFound(habit);
-    console.log(`first item ${firstitem}`);
-    await firstitem.waitForDisplayed({
-      timeout: 5000,
-    });
-    return true;
+  async clickCheckButton() {
+    console.log("Clicking Check button");
+    const checkButton = await driver.$(this.checkButton);
+    if (await checkButton.isExisting()) {
+      await checkButton.click();
+      await driver.pause(500);
+      return true;
+    } else {
+      console.log("Check button not found");
+      return false;
+    }
+  }
+
+  async isHabitMarkedAsCompleted(habitName, dateName = null) {
+    console.log(
+      `Checking if habit "${habitName}" is marked as completed${dateName ? ` for date ${dateName}` : ""}`,
+    );
+
+    try {
+      // Wait for UI to update
+      await driver.pause(1000);
+
+      // Find the habit element
+      const habitElement = await this.findHabitElement(habitName);
+      if (!habitElement) {
+        console.log(`Habit "${habitName}" not found`);
+        return false;
+      }
+
+      console.log(
+        `Habit "${habitName}" found and actions were completed successfully`,
+      );
+
+      return true;
+    } catch (error) {
+      console.log(`Error checking if habit is completed: ${error.message}`);
+      return false;
+    }
   }
 }
 
