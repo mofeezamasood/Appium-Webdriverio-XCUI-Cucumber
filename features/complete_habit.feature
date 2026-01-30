@@ -16,4 +16,6 @@ Feature: Complete Habit
     |   Eat Dinner    | Thursday, January 29, 2026   |
     |  Do Excercise   | Tuesday, January 27, 2026   |
     |  Go on a Walk   | Wednesday, January 28, 2026 |
-
+    |   Eat Dinner    | Thursday, January 29, 2026 |
+    |   Drink Juice   | Wednesday, January 28, 2026 |
+    |  Do Homework    | Tuesday, January 27, 2026   |

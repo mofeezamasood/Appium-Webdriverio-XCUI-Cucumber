@@ -22,10 +22,7 @@ exports.config = {
   // of the config file unless it's absolute.
   //
   specs: ["./features/**/*.feature"],
-  // Patterns to exclude.
-  exclude: [
-    // 'path/to/excluded/files'
-  ],
+  exclude: [],
   //
   // ============
   // Capabilities
@@ -50,7 +47,6 @@ exports.config = {
   //
   capabilities: [
     {
-      // capabilities for local Appium web tests on iOS
       platformName: "iOS",
       "appium:automationName": "XCUITest",
       "appium:deviceName": "iPhone 17",
@@ -148,7 +144,9 @@ exports.config = {
   // If you are using Cucumber you need to specify the location of your step definitions.
   cucumberOpts: {
     // <string[]> (file/dir) require files before executing features
-    require: ["./features/step-definitions/*.js"],
+    require: [
+      "./step-definitions/**/*.js", // All step definitions
+    ],
     // <boolean> show full backtrace for errors
     backtrace: false,
     // <string[]> ("extension:module") require files with the given EXTENSION after requiring MODULE (repeatable)

@@ -19,3 +19,7 @@ Feature: Edit Habit
     | Eat Dinner    |  Eat  |
     | Do Excercise  |  Do  |
     | Go on a Walk  |  Go  |
+    |   Drink Juice   | Juice |
+    |  Do Homework    | Homework |
+    |  Go on a Run    | Run |
+    |   Eat launch    | Lunch|

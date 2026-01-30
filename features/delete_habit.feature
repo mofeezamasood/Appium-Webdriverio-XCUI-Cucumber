@@ -18,3 +18,7 @@ Feature: Delete Habit
     |  Do Excercise   | 
     |  Go on a Walk   |
     |   Eat Dinner    |
+    |   Drink Juice   | 
+    |  Do Homework    | 
+    |  Go on a Run    |
+    |   Eat launch    |
