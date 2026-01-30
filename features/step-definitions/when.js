@@ -39,3 +39,7 @@ When("I delete the habit", async () => {
 When("I click on modify button for {string}", async (habitName) => {
   await pages["home"].clickModifyButton(habitName);
 });
+
+When("I click on Habit Text Field", async () => {
+  await pages["habit"].enterHabitText(habitName);
+});

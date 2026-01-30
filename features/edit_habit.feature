@@ -6,8 +6,16 @@ Feature: Edit Habit
 
   Scenario: Edit an existing habit
     Given the Habo app is launched
-    And a habit named "Run" exists
-    When I open the habit "Run"
-    And I update the habit name to "Morning Run"
-    And I save the habit changes
-    Then the habit "Morning Run" should appear in the habit list
+    And a habit named "<Habit>" exists
+    When I click on modify button for "<Habit>"
+    And I enter "<Editted>" as the habit name    
+    And I tap on the Save Habit button
+    Then the habit "<Editted>" should appear in the habit list
+
+
+  Examples:
+    | Habit         | Editted |
+    | Drink Water   |  Drink  |
+    | Eat Dinner    |  Eat  |
+    | Do Excercise  |  Do  |
+    | Go on a Walk  |  Go  |

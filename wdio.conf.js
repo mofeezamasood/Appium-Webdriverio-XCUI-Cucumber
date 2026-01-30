@@ -111,13 +111,13 @@ exports.config = {
   services: [
     [
       "appium",
-      {
-        args: {
-          debugLogSpacing: true,
-          log: "./appium.log",
-          logTimestamp: true,
-        },
-      },
+      // {
+      //   args: {
+      //     debugLogSpacing: true,
+      //     log: "./appium.log",
+      //     logTimestamp: true,
+      //   },
+      // },
     ],
   ],
   appium: { command: "appium" },

@@ -15,6 +15,6 @@ Feature: Delete Habit
   Examples:
     |      Habit      |
     |   Drink Water   | 
-    # |  Do Excercise   | 
-    # |  Go on a Walk   |
-    # |   Eat Dinner    |
+    |  Do Excercise   | 
+    |  Go on a Walk   |
+    |   Eat Dinner    |
